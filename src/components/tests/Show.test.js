@@ -63,9 +63,9 @@ test('handleSelect is called when a season is selected', () => {
 		/>
 	);
 
-	const placeholder = screen.getByPlaceholderText('Select an option');
+	const options = screen.getByRole('combobox');
 
-	userEvent.selectOptions(placeholder, '1');
+	userEvent.selectOptions(options, '1');
 
 	expect(mockHandleSelect).toHaveBeenCalled();
 });

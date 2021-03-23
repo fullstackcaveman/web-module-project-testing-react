@@ -14,12 +14,7 @@ const Show = (props) => {
 
 			<label htmlFor='seasons'>Select A Season</label>
 			<br />
-			<select
-				placeholder='Select an option'
-				onChange={handleSelect}
-				name='seasons'
-				id='seasons'
-			>
+			<select onChange={handleSelect} name='seasons' id='seasons'>
 				<option value='none'></option>
 				{show.seasons.map((season) => {
 					return (

@@ -5,22 +5,79 @@ import userEvent from '@testing-library/user-event';
 import Show from './../Show';
 
 const testShow = {
-    //add in approprate test data structure here.
-}
+	//add in approprate test data structure here.
+	name: '',
+	summary: '',
+	seasons: [
+		{
+			id: '1',
+			name: 'Season 1',
+			episodes: [],
+		},
+		{
+			id: '2',
+			name: 'Season 2',
+			episodes: [],
+		},
+		{
+			id: '3',
+			name: 'Season 3',
+			episodes: [],
+		},
+		{
+			id: '4',
+			name: 'Season 4',
+			episodes: [],
+		},
+	],
+};
 
-test('renders testShow and no selected Season without errors', ()=>{
+test('renders testShow and no selected Season without errors', () => {
+	render(<Show show={testShow} selectedSeason={'none'} />);
 });
 
 test('renders Loading component when prop show is null', () => {
+	render(<Show show={null} selectedSeason={'none'} />);
+
+	const loading = screen.getByText('Fetching data...');
+
+	expect(loading).toBeInTheDocument();
 });
 
-test('renders same number of options seasons are passed in', ()=>{
+test('renders same number of options seasons are passed in', () => {
+	render(<Show show={testShow} selectedSeason={'none'} />);
+
+	const seasons = screen.queryAllByTestId('season-option');
+
+	expect(seasons).toHaveLength(4);
 });
 
-test('handleSelect is called when an season is selected', () => {
+test('handleSelect is called when a season is selected', () => {
+	const mockHandleSelect = jest.fn();
+
+	render(
+		<Show
+			show={testShow}
+			selectedSeason={'none'}
+			handleSelect={mockHandleSelect}
+		/>
+	);
+
+	const options = screen.getByRole('combobox');
+
+	userEvent.selectOptions(options, '1');
+
+	expect(mockHandleSelect).toHaveBeenCalled();
 });
 
 test('component renders when no seasons are selected and when rerenders with a season passed in', () => {
+	const { rerender } = render(<Show show={null} selectedSeason={'none'} />);
+	let seasons = screen.queryAllByTestId('season-option');
+	expect(seasons).toHaveLength(0);
+
+	rerender(<Show show={testShow} selectedSeason={'none'} />);
+	seasons = screen.queryAllByTestId('season-option');
+	expect(seasons).toHaveLength(4);
 });
 
 //Tasks:
